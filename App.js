@@ -24,7 +24,7 @@ export default function App() {
 
   return (<NavigationContainer>
       {/* Stack.Navigator là nơi bạn định nghĩa các màn hình có thể điều hướng */}
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="LoginScreen">
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}

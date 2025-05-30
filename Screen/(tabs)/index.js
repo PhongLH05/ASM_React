@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigation = () => {
   return (
-    <NavigationContainer>
+    
       <Tab.Navigator>
         <Tab.Screen
           name="Home"
@@ -40,7 +40,7 @@ const TabNavigation = () => {
             ), }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
+    
   );
 };
 
