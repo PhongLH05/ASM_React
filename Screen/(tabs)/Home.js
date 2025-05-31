@@ -5,6 +5,8 @@ import { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { StyleSheet } from "react-native";
 import { StatusBar } from "react-native";
+import Icon from "@react-native-vector-icons/ionicons";
+import { useNavigation } from "@react-navigation/native";
 
 const DATA = [
   {
@@ -32,6 +34,7 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 
 const Home = () => {
   const [selectedId, setSelectedId] = useState();
+  const navigation = useNavigation();
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
@@ -50,11 +53,41 @@ const Home = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView>
+
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 12, margin: 4}}>
+          <Icon name="grid-outline" size={24}/>
+          <Text style={{fontSize: 20, fontWeight: 'bold'}} >
+            Produces Shop
+          </Text>
+          <Icon name="person-circle-outline" size={24} onPress={() => navigation.navigate('Account')}/>
+        </View>
+
+        <Text style={styles.title}>
+          Choose the best
+        </Text>
+
         <FlatList
+        style={{marginTop: 12}}
           data={DATA}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           extraData={selectedId}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+
+        <Text style={styles.title}>
+          Vegetable
+        </Text>
+
+        <FlatList
+        style={{marginTop: 12}}
+          data={DATA}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          extraData={selectedId}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
         />
       </SafeAreaView>
     </SafeAreaProvider>
@@ -72,8 +105,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   title: {
-    fontSize: 32,
+    fontSize: 18, marginLeft: 12, fontWeight: 'bold', marginBottom:12
   },
+
 });
 
 export default Home;

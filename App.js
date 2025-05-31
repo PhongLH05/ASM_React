@@ -7,6 +7,7 @@ import TabNavigation from "./Screen/(tabs)";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Cart from "./Screen/(tabs)/Cart";
+import Account from "./Screen/Account";
 
 export default function App() {
   const [isShowSplash, setIsShowSplash] = useState(true);
@@ -39,6 +40,11 @@ export default function App() {
           name="index"
           component={TabNavigation}
           options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="Account"
+          component={Account}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>);
