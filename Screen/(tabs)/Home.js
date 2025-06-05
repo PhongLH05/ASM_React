@@ -7,6 +7,8 @@ import { StyleSheet } from "react-native";
 import { StatusBar } from "react-native";
 import Icon from "@react-native-vector-icons/ionicons";
 import { useNavigation } from "@react-navigation/native";
+import CategoriesList from "../../components/Categories";
+import FoodCard from "../../components/FoodCard";
 
 const DATA = [
   {
@@ -59,36 +61,14 @@ const Home = () => {
           <Text style={{fontSize: 20, fontWeight: 'bold'}} >
             Produces Shop
           </Text>
-          <Icon name="person-circle-outline" size={24} onPress={() => navigation.navigate('Account')}/>
+          <Icon name="person-circle-outline" size={24} onPress={() => navigation.navigate('SettingsScreen')}/>
         </View>
 
         <Text style={styles.title}>
           Choose the best
         </Text>
-
-        <FlatList
-        style={{marginTop: 12}}
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={selectedId}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-        />
-
-        <Text style={styles.title}>
-          Vegetable
-        </Text>
-
-        <FlatList
-        style={{marginTop: 12}}
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={selectedId}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-        />
+        <CategoriesList />
+        <FoodCard />
       </SafeAreaView>
     </SafeAreaProvider>
   );

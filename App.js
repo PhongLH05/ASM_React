@@ -8,6 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Cart from "./Screen/(tabs)/Cart";
 import Account from "./Screen/Account";
+import SettingsScreen from "./Screen/SettingsScreen";
 
 export default function App() {
   const [isShowSplash, setIsShowSplash] = useState(true);
@@ -44,6 +45,11 @@ export default function App() {
         <Stack.Screen 
           name="Account"
           component={Account}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen 
+          name="SettingsScreen"
+          component={SettingsScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
