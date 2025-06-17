@@ -1,33 +1,68 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { Categories } from '../data/data'
+import { ScrollView, StyleSheet, Text, View, Pressable } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const CategoriesList = () => {
+const CategoriesList = ({ onCategorySelect }) => {
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
+
+    const fetchCategories = async () => {
+        try {
+            const res = await axios.get('http://localhost:3000/Categories');
+            console.log(res.data)
+            const serverCategories = res.data;
+            const finalCategories = [{ id: '01', category: 'All' }, ...serverCategories];
+            setCategories(finalCategories);
+            if (res.data.length > 0) {
+                setSelectedCategory(res.data[0].category);
+                onCategorySelect(res.data[0].category);
+            }
+        } catch (error) {
+            console.error('Lỗi khi lấy category:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const handleSelect = (category) => {
+        setSelectedCategory(category);
+        onCategorySelect(category);
+    };
+
     return (
         <View style={{ paddingHorizontal: 10 }}>
-            <ScrollView horizontal>
-                {Categories.map((item, index) => {
-                    return (
-                        <View key={index} style={styles.category}>
-                            <Text style={[styles.txtCategory, index === 0 ? styles.firstCategory : null]}>
-                                {item.category}
-                            </Text>
-                        </View>
-                    );
-                })}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {categories.map((item, index) => (
+                    <Pressable
+                        key={index}
+                        onPress={() => handleSelect(item.category)}
+                        style={styles.category}
+                    >
+                        <Text
+                            style={[
+                                styles.txtCategory,
+                                selectedCategory === item.category && styles.firstCategory
+                            ]}
+                        >
+                            {item.category}
+                        </Text>
+                    </Pressable>
+                ))}
             </ScrollView>
         </View>
-    )
-}
+    );
+};
 
-export default CategoriesList
+export default CategoriesList;
+
 
 const styles = StyleSheet.create({
     category: {
         marginVertical: 10,
         borderColor: '#52555A',
         borderEndWidth: 1,
-        // paddingHorizontal: 10,
         justifyContent: 'center',
     },
     txtCategory: {
@@ -42,4 +77,4 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginLeft: 0,
     },
-})
+});

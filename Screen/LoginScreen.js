@@ -5,26 +5,50 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  Animated
-  
+  Animated,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
   createStaticNavigation,
   useNavigation,
-} from '@react-navigation/native';
+  useRoute,
+} from "@react-navigation/native";
+import axios from "axios";
+import a from "./(tabs)/index";
 
+export default function LoginScreen({ navigation, route }) {
+  const [inputEmail, setInputEmail] = useState("");
+  const [inputPassword, setInputPassword] = useState("");
+  const [name, setName] = useState();
+  const apiURL = "http://localhost:3000/users";
 
+  const handleLogin = async () => {
+    if (!inputEmail || !inputPassword) {
+      Alert.alert("Lỗi", "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu");
+      return;
+    }
 
+    try {
+      const res = await axios.get(
+        `${apiURL}?email=${inputEmail}&password=${inputPassword}`
+      );
+      const loggedInUser = res.data[0];
+      navigation.navigate('index', {email: inputEmail, email: inputEmail, user: loggedInUser})
+      if (res.data.length > 0) {
+        Alert.alert("Thành công", "Đăng nhập thành công!");
+       
+      } else {
+        Alert.alert("Thất bại", "Tên đăng nhập hoặc mật khẩu sai");
+      }
+    } catch (error) {
+      Alert.alert("Lỗi", "Không thể kết nối đến server");
+      console.error(error);
+    }
+  };
 
-
-
-
-export default function LoginScreen() {
-  const navigation = useNavigation();
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
       <View style={{ paddingHorizontal: 25 }}>
@@ -42,7 +66,7 @@ export default function LoginScreen() {
           Login
         </Text>
 
-        <Animated.View 
+        <Animated.View
           style={{
             flexDirection: "row",
             borderBottomColor: "#ccc",
@@ -61,6 +85,8 @@ export default function LoginScreen() {
             placeholder="Email ID"
             style={{ flex: 1, paddingVertical: 0 }}
             keyboardType="email-address"
+            value={inputEmail}
+            onChangeText={setInputEmail}
           />
         </Animated.View>
         <View
@@ -82,6 +108,8 @@ export default function LoginScreen() {
             placeholder="Password"
             style={{ flex: 1, paddingVertical: 0 }}
             secureTextEntry={true}
+            value={inputPassword}
+            onChangeText={setInputPassword}
           />
           <TouchableOpacity onPress={() => {}}>
             <Text style={{ color: "#39e75f", fontWeight: "500" }}>Forgot</Text>
@@ -89,7 +117,7 @@ export default function LoginScreen() {
         </View>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('index')}
+          onPress={handleLogin}
           style={{
             backgroundColor: "#39e75f",
             padding: 16,
@@ -109,14 +137,10 @@ export default function LoginScreen() {
           </Text>
         </TouchableOpacity>
 
-        <View style={{ flexDirection: "row" , justifyContent: "center" }}>
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Text>Don't have an account?</Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SignUpScreen')}
-          >
-            <Text
-              style={{color: '#39e75f', fontWeight: '700'}}
-            > SignUp</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("SignUpScreen")}>
+            <Text style={{ color: "#39e75f", fontWeight: "700" }}> SignUp</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -9,6 +9,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Cart from "./Screen/(tabs)/Cart";
 import Account from "./Screen/Account";
 import SettingsScreen from "./Screen/SettingsScreen";
+import FoodDetail from "./components/FoodDetail";
 
 export default function App() {
   const [isShowSplash, setIsShowSplash] = useState(true);
@@ -50,6 +51,11 @@ export default function App() {
         <Stack.Screen 
           name="SettingsScreen"
           component={SettingsScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen 
+          name="FoodDetail"
+          component={FoodDetail}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

@@ -8,12 +8,36 @@ import {
   Animated
   
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 const SignUpScreen = () => {
+  const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const nav = useNavigation();
+
+    const postUser = async() => {
+      try {
+        if(!name || !password || !email){
+          return alert('Nhap day du thong tin')
+        }
+        const res = await axios.post('http://localhost:3000/users', {
+          name: name,
+          email: email,
+          password: password
+        })
+        alert('Success');
+        nav.navigate('LoginScreen', {name, email, password})
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
           <View style={{ paddingHorizontal: 25 }}>
@@ -50,6 +74,7 @@ const SignUpScreen = () => {
                 placeholder="Username"
                 style={{ flex: 1, paddingVertical: 0 }}
                 keyboardType="default"
+                onChangeText={setName}
               />
             </Animated.View>
 
@@ -72,6 +97,7 @@ const SignUpScreen = () => {
                 placeholder="Email ID"
                 style={{ flex: 1, paddingVertical: 0 }}
                 keyboardType="email-address"
+                onChangeText={setEmail}
               />
             </Animated.View>
 
@@ -94,13 +120,14 @@ const SignUpScreen = () => {
                 placeholder="Password"
                 style={{ flex: 1, paddingVertical: 0 }}
                 secureTextEntry={true}
+                onChangeText={setPassword}
               />
             </View>
 
             
     
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => postUser()}
               style={{
                 backgroundColor: "#39e75f",
                 padding: 16,
@@ -116,18 +143,18 @@ const SignUpScreen = () => {
                   color: "#FFF",
                 }}
               >
-                Login
+                Sign Up
               </Text>
             </TouchableOpacity>
     
             <View style={{ flexDirection: "row" , justifyContent: "center" }}>
-              <Text>Don't have an account?</Text>
+              <Text>Already have an account?</Text>
               <TouchableOpacity
-                onPress={() => {}}
+                onPress={() => nav.navigate('LoginScreen')}
               >
                 <Text
                   style={{color: '#39e75f', fontWeight: '700'}}
-                > SignUp</Text>
+                > Login</Text>
               </TouchableOpacity>
             </View>
           </View>

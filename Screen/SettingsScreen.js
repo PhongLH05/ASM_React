@@ -1,5 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -20,21 +20,26 @@ const settingsOptions = [
 ];
 
 const SettingsScreen = () => {
-
-    const navigation = useNavigation();
-
-    const handleOptionPress = (item) => {
-        if (item.title === "Personal Details") {
-            navigation.navigate('Account');
-        } else {
-          console.log('Failed');
-          
-        }
-      };
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { user } = route.params || {};
+  const handleOptionPress = (item) => {
+    if (item.title === "Personal Details") {
+      navigation.navigate("Account", {user: user});
+    }
+    if (item.id == 7) {
+      navigation.navigate("LoginScreen");
+    } else {
+      console.log("Failed");
+    }
+  };
 
   const renderItem = ({ item }) => (
     <SafeAreaView>
-      <TouchableOpacity style={styles.option} onPress={() => handleOptionPress(item)}>
+      <TouchableOpacity
+        style={styles.option}
+        onPress={() => handleOptionPress(item)}
+      >
         <Text style={styles.optionText}>{item.title}</Text>
         <Text style={styles.arrow}>{">"}</Text>
       </TouchableOpacity>
@@ -59,7 +64,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    marginTop: 20
+    marginTop: 20,
   },
   header: {
     fontSize: 24,
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
     color: "black",
   },
   arrow: {
-    color: "#39e75f", 
+    color: "#39e75f",
     fontSize: 18,
   },
 });
